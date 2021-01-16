@@ -3,6 +3,8 @@ import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css'; // Add css for snow theme
 import {Button,Typography,Divider, makeStyles, Paper} from "@material-ui/core";
 import NewComment from './NewComment';
+import parse from 'html-react-parser';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,36 +23,42 @@ const App = () => {
   const theme = 'snow';
   const modules = {
     toolbar: [
-      ['bold', 'italic', 'underline', 'strike', 'align', 'link'],  
+      ['bold', 'italic', 'underline', 'strike', 'link'],  
       [{ color: [] }],
     [{ list: 'ordered'}, { list: 'bullet' }],
     [{ size: ['small', false, 'large', 'huge'] }],
     ],
   };
   const placeholder = 'Add a comment...';
-  const formats = ['bold', 'italic', 'underline', 'strike', 'align', 'link', 'color', 'list', 'size'];
+  const formats = ['bold', 'italic', 'underline', 'strike', 'link', 'color', 'list', 'size'];
   const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
-console.log(quill);
-console.log(quillRef);
-const content =
+  const [savedText, setSavedText] = useState("");
+  const [allNotes, setAllNotes]= useState([]);
+
   React.useEffect(() => {
     if (quill) {
-      quill.on('editor-change', () => {
-        const text= quill.getContents();
-        console.log(text);  
-      }); 
+      quill.on('text-change', () => {
+        let html = parse(quill.root.innerHTML); 
+        setSavedText(html);
+      });
     }
-  }, [quill]);
-  
-  const [allNotes, setAllNotes]= useState([]);
-  
+  }, [quill]); //saves updated content to state
+
+  const deleteNote = id => {
+    const modifiedNote = allNotes.filter(eachNote => {
+      return eachNote.id !== id;
+    });
+    setAllNotes(modifiedNote);
+  };
  
   const saveNote = (event) => {
-  event.preventDefault(); 
-      setAllNotes([...allNotes, content]); 
-
-  }
-
+    event.preventDefault(); 
+    const id = Date.now();
+    let length = quill.getLength();
+    setAllNotes([...allNotes, { savedText, id }])
+    quill.deleteText(0, length);
+  };
+ 
   return (
     <div >
     <Paper elevation={7} className={classes.root} square={false}>
@@ -60,12 +68,14 @@ const content =
     {allNotes.map(eachNote => {
       return (
         <NewComment
-        key={eachNote.index}
-        content={eachNote.content}/>
+        id={eachNote.id}
+        key={eachNote.id}
+        savedText={eachNote.savedText}
+        deleteNote={deleteNote}/>
       );
     })}
     <form onSubmit={saveNote}>
-    <div style={{ width: 500, height: 200, border: '1px solid lightgray' }}>
+    <div style={{ width: 'auto', height: 200, border: '1px solid lightgray' }}>
       <div ref={quillRef}/>
     </div>
         <Button type="submit" className={classes.button}

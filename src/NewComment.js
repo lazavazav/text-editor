@@ -1,22 +1,33 @@
 import React from 'react';
-import 'quill/dist/quill.snow.css'; // Add css for snow theme
-import {Box,Avatar,makeStyles} from "@material-ui/core";
+import {Box,Button,Avatar,makeStyles} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 30,
-    width: 30
+    width: 30,
+    marginRight: 5,
+    marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
+  button: {
+    margin: theme.spacing(1),
+    backgroundColor: '#f7a45c',
+    color: 'white',
+    variant: 'contained',
+    size: 'small',
+    },
 }));
 
-const NewComment = ({content, index}) => {
+const NewComment = ({savedText, id, deleteNote}) => {
   const classes = useStyles();
-  
-  
+ 
   return (
-    <Box style={{ width: 500, height: 200, border: '1px solid lightgray' }}>
+    <Box style={{ display: 'flex', width: 'auto', height: 'auto', border: '1px solid lightgray'}}
+    >
     <Avatar className={classes.avatar}/>
-      <Box value={content} id={index} />
+   <div style={{flexGrow: 1}}>{savedText}</div>
+    <Button onClick={() => deleteNote(id)} className={classes.button} startIcon={<DeleteIcon  />}>Delete</Button>
     </Box>
   );
 };
