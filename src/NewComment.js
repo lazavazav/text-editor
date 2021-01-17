@@ -27,7 +27,14 @@ const NewComment = ({savedText, id, deleteNote}) => {
   
   return (
     <>
-    <Box style={{ display: 'flex', flexWrap: 'wrap',  width: 'auto', height: 'auto', border: '1px solid lightgray', margin: 5, backgroundColor: '#f2f2f2'}}
+    <Box style={{ 
+      display: 'flex', 
+      flexWrap: 'wrap',  
+      width: 'auto', 
+      height: 'auto', 
+      border: '1px solid lightgray', 
+      margin: 5, 
+      backgroundColor: '#f2f2f2'}}
     >
     <Avatar className={classes.avatar}/>
     <p style={{marginRight: 5, flexGrow: 1}}>{moment(now).format("lll")}</p>

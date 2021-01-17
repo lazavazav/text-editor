@@ -76,7 +76,7 @@ const App = () => {
     })}
     <form onSubmit={saveNote}>
     <div style={{ width: 'auto', height: 200, border: '1px solid lightgray' }}>
-      <div ref={quillRef}/>
+    <div ref={quillRef}/>
     </div>
         <Button type="submit" className={classes.button}
 >Add Comment</Button>
