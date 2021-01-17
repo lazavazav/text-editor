@@ -31,10 +31,9 @@ const App = () => {
   const placeholder = 'Add a comment...';
   const formats = ['bold', 'italic', 'underline', 'strike', 'link', 'color', 'list', 'size'];
   const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
-  const [savedText, setSavedText] = useState("");
+  const [savedText, setSavedText] = useState('');
   const [allNotes, setAllNotes]= useState([]);
   
-
   React.useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
