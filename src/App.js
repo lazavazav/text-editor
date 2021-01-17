@@ -5,7 +5,6 @@ import {Button,Typography,Divider, makeStyles, Paper} from "@material-ui/core";
 import NewComment from './NewComment';
 import parse from 'html-react-parser';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '95%',
@@ -34,6 +33,7 @@ const App = () => {
   const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
   const [savedText, setSavedText] = useState("");
   const [allNotes, setAllNotes]= useState([]);
+  
 
   React.useEffect(() => {
     if (quill) {
